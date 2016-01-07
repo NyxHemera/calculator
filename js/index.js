@@ -3,7 +3,7 @@ $( document ).ready(function() {
 	var operator = 0;
 	var currentnum = 0;
 	var total = 0;
-	
+	var digital = false;
 	
 	
 	function run() {
@@ -29,8 +29,17 @@ $( document ).ready(function() {
 	}
 	
 	function addDigit(newnum) {
-		currentnum = parseInt("" + currentnum + newnum);
-		updateScreen(currentnum);
+		
+		if(digital){
+			newnum = currentnum + (newnum/10);
+			currentnum = newnum;
+			updateScreen(currentnum);
+			digital = false;
+		}else{
+			currentnum = parseFloat("" + currentnum + newnum);
+			updateScreen(currentnum);
+		}
+		
 	}
 	
 	function sum() {
@@ -56,6 +65,17 @@ $( document ).ready(function() {
 	function divide() {
 		total = total / currentnum;
 		currentnum = 0;
+	}
+	
+	function allClear() {
+		currentnum = 0;
+		total = 0;
+		updateScreen(currentnum);
+	}
+	
+	function clearEntry() {
+		currentnum = 0;
+		updateScreen(currentnum);
 	}
 	
 	function updateScreen(num) {
@@ -88,6 +108,12 @@ $( document ).ready(function() {
 		updateScreen(total);
 		operator = 4;
 	});
+	$("#AC").on( "click", function() {
+		allClear();
+	});
+	$("#CE").on( "click", function() {
+		clearEntry();
+	});
 	
 	$("#one").on( "click", function() {
 		addDigit(1);
@@ -118,6 +144,9 @@ $( document ).ready(function() {
 	});
 	$("#zero").on( "click", function() {
 		addDigit(0);
+	});
+	$("#decimal").on( "click", function() {
+		digital = true;
 	});
 	
 });
